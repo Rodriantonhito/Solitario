@@ -59,19 +59,19 @@ public class Tablero {
             }
         }
     }
-    
-    public void dameMovimiento(int posColumna, int posFila, int posFinalColum, int posFinalFila ){
-       char datoOrigen = tablero[posColumna][posFila];
-       char datoFinal= tablero[posFinalColum][posFinalFila];       
-       tablero [posColumna][posFila] = datoOrigen;
-       tablero[posFinalColum][posFinalFila]=datoFinal;
-       
-       if(posColumna>posFinalColum){
-           tablero[posColumna+1][posFila]=datoFinal;
-       }else{
-           tablero[posFinalColum-1][posFinalFila]=datoFinal;
-       }
-    
+
+    public void dameMovimiento(int posColumna, int posFila, int posFinalColum, int posFinalFila) {
+        char datoOrigen = tablero[posColumna][posFila];
+        char datoFinal = tablero[posFinalColum][posFinalFila];
+        tablero[posColumna][posFila] = datoOrigen;
+        tablero[posFinalColum][posFinalFila] = datoFinal;
+
+        if (posColumna > posFinalColum) {
+            tablero[posColumna + 1][posFila] = datoFinal;
+        } else {
+            tablero[posFinalColum - 1][posFinalFila] = datoFinal;
+        }
+
     }
 
     public String dibujarTablero() {
