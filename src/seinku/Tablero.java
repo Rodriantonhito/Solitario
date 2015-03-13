@@ -65,20 +65,31 @@ public class Tablero {
         char datoFinal = tablero[posFinalColum][posFinalFila];
         tablero[posColumna][posFila] = datoOrigen;
         tablero[posFinalColum][posFinalFila] = datoFinal;
+        
+        //movimiento horizontal
+        if (posFila == posFinalFila) {
+            if (posColumna > posFinalColum) {
+                tablero[posColumna + 1][posFila] = datoFinal;
 
-        if (posColumna > posFinalColum) {
-            tablero[posColumna + 1][posFila] = datoFinal;
-        } else {
-            tablero[posFinalColum - 1][posFinalFila] = datoFinal;
+            } else {
+                tablero[posFinalColum - 1][posFinalFila] = datoFinal;
+            }
         }
-
+        //movimiento de arriba y abajo
+        if (posColumna == posFinalColum) {
+            if (posFila > posFinalFila) {
+                tablero[posColumna][posFila + 1] = datoFinal;
+            } else {
+                tablero[posFinalColum][posFinalFila - 1] = datoFinal;
+            }
+        }
     }
 
     public String dibujarTablero() {
         String texto = "";
         for (int i = 0; i < FILA; i++) {
             for (int j = 0; j < COLUMNA; j++) {
-                texto += tablero[i][j];
+                texto += tablero[j][i];
             }
             texto += "\n";
         }
