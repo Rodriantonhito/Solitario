@@ -24,35 +24,27 @@ public class Tablero {
                 if (i < 2 || i > 4) {
                     switch (j) {
                         case 0:
-                            tablero[i][j] = ' ';
-                            break;
                         case 1:
-                            tablero[i][j] = ' ';
+                            tablero[j][i] = ' ';
                             break;
-                        case 2:
-                            tablero[i][j] = '#';
-                            break;
-                        case 3:
-                            tablero[i][j] = '#';
-                            break;
+                        case 2:                            
+                        case 3:                            
                         case 4:
-                            tablero[i][j] = '#';
+                            tablero[j][i] = '#';
                             break;
-                        case 5:
-                            tablero[i][j] = ' ';
-                            break;
+                        case 5:                           
                         case 6:
-                            tablero[i][j] = ' ';
+                            tablero[j][i] = ' ';
                             break;
                     }
                 } else {
                     if (i == 2 || i == 4) {
-                        tablero[i][j] = '#';
+                        tablero[j][i] = '#';
                     } else {
                         if (j == 3) {
-                            tablero[i][j] = '.';
+                            tablero[j][i] = '.';
                         } else {
-                            tablero[i][j] = '#';
+                            tablero[j][i] = '#';
                         }
                     }
                 }
@@ -63,24 +55,29 @@ public class Tablero {
     public void dameMovimiento(int posColumna, int posFila, int posFinalColum, int posFinalFila) {
         char datoOrigen = tablero[posColumna][posFila];
         char datoFinal = tablero[posFinalColum][posFinalFila];
-        tablero[posColumna][posFila] = datoOrigen;
-        tablero[posFinalColum][posFinalFila] = datoFinal;
+        tablero[posColumna][posFila] = '#';
+        tablero[posFinalColum][posFinalFila] = '#';
         
         //movimiento horizontal
         if (posFila == posFinalFila) {
             if (posColumna > posFinalColum) {
                 tablero[posColumna + 1][posFila] = datoFinal;
+                tablero[posColumna][posFila]= '.';
 
             } else {
                 tablero[posFinalColum - 1][posFinalFila] = datoFinal;
+                tablero[posColumna][posFila]= '.';
             }
         }
         //movimiento de arriba y abajo
         if (posColumna == posFinalColum) {
             if (posFila > posFinalFila) {
                 tablero[posColumna][posFila + 1] = datoFinal;
+                tablero[posColumna][posFila]= '.';
+                
             } else {
                 tablero[posFinalColum][posFinalFila - 1] = datoFinal;
+                tablero[posColumna][posFila]= '.';
             }
         }
     }
