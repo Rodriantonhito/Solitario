@@ -1,5 +1,7 @@
 package seinku;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Antonio
@@ -12,6 +14,7 @@ public class Tablero {
     private char[][] tablero;
 
     private String[] patron;
+    private ArrayList <Movimientos> listaMovimientos = new ArrayList();
 
     public Tablero() {
         tablero = new char[FILA][COLUMNA];
