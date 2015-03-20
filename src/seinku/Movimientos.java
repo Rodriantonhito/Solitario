@@ -18,4 +18,20 @@ public class Movimientos {
         this.posFinalFila = posFinalFila;
     }
 
+    public int getPosColumna() {
+        return posColumna;
+    }
+
+    public int getPosFila() {
+        return posFila;
+    }
+
+    public int getPosFinalColum() {
+        return posFinalColum;
+    }
+
+    public int getPosFinalFila() {
+        return posFinalFila;
+    }
+
 }
