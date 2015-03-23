@@ -38,6 +38,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButtonDeshacer = new javax.swing.JButton();
+        jButtonXML = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +88,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonXML.setText("CrearXML");
+        jButtonXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonXMLActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -125,8 +133,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGap(114, 114, 114))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addGap(68, 68, 68)
+                        .addGap(18, 18, 18)
                         .addComponent(jButtonDeshacer)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonXML)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -155,9 +165,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addComponent(jTextFieldPosFinalColum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldPosFinalFila, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
-                            .addComponent(jButtonDeshacer))
+                            .addComponent(jButtonDeshacer)
+                            .addComponent(jButtonXML))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -167,8 +178,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButtonPintarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPintarActionPerformed
        tablero1.rellenarTablero();
-        jTextArea1.setText(tablero1.dibujarTablero());
-         
+        jTextArea1.setText(tablero1.dibujarTablero());       
         
        
     }//GEN-LAST:event_jButtonPintarActionPerformed
@@ -190,6 +200,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         tablero1.deshacer();
         jTextArea1.setText(tablero1.dibujarTablero());
     }//GEN-LAST:event_jButtonDeshacerActionPerformed
+
+    private void jButtonXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonXMLActionPerformed
+        tablero1.crearXML();
+    }//GEN-LAST:event_jButtonXMLActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,6 +244,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonDeshacer;
     private javax.swing.JButton jButtonPintar;
+    private javax.swing.JButton jButtonXML;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

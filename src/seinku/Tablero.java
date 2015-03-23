@@ -1,6 +1,22 @@
 package seinku;
 
+import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import java.util.ArrayList;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 /**
  *
@@ -83,45 +99,122 @@ public class Tablero {
                 tablero[posColumna][posFila] = '.';
             }
         }
-         Movimientos movimiento = new Movimientos( posColumna, posFila,  posFinalColum, posFinalFila);
-         listaMovimientos.add(movimiento);
+        Movimientos movimiento = new Movimientos(posColumna, posFila, posFinalColum, posFinalFila);
+        listaMovimientos.add(movimiento);
     }
-    public void deshacer(){
+
+    public void deshacer() {
         //El listaMovimientos guarda los 4 int y el get ultimo nos da la posicion que sea
         //y la guarda en la variable oportuna.
-        int posColumna = listaMovimientos.get(listaMovimientos.size()-1).getPosColumna();
-        int posFila = listaMovimientos.get(listaMovimientos.size()-1).getPosFila();
-        int posFinalColum = listaMovimientos.get(listaMovimientos.size()-1).getPosFinalColum();
-        int posFinalFila = listaMovimientos.get(listaMovimientos.size()-1).getPosFinalFila();
-        
+        int posColumna = listaMovimientos.get(listaMovimientos.size() - 1).getPosColumna();
+        int posFila = listaMovimientos.get(listaMovimientos.size() - 1).getPosFila();
+        int posFinalColum = listaMovimientos.get(listaMovimientos.size() - 1).getPosFinalColum();
+        int posFinalFila = listaMovimientos.get(listaMovimientos.size() - 1).getPosFinalFila();
+
         //movimiento de izquierda a derecha.
         if (posFila == posFinalFila) {
             if (posColumna > posFinalColum) {
                 tablero[posColumna + 1][posFila] = '#';
                 tablero[posColumna][posFila] = '.';
-                tablero[posFinalColum][posFinalFila]='.';
+                tablero[posFinalColum][posFinalFila] = '.';
 
             } else {
                 tablero[posFinalColum - 1][posFinalFila] = '#';
                 tablero[posColumna][posFila] = '#';
-                tablero[posFinalColum][posFinalFila]='.';
+                tablero[posFinalColum][posFinalFila] = '.';
             }
         }
-        
+
         //movimiento hacia arriba y hacia abajo.
         if (posColumna == posFinalColum) {
             if (posFila > posFinalFila) {
                 tablero[posColumna][posFila + 1] = '#';
                 tablero[posColumna][posFila] = '.';
-                tablero[posFinalColum][posFinalFila]='.';
+                tablero[posFinalColum][posFinalFila] = '.';
 
             } else {
                 tablero[posFinalColum][posFinalFila - 1] = '#';
                 tablero[posColumna][posFila] = '.';
-                tablero[posFinalColum][posFinalFila]='.';
+                tablero[posFinalColum][posFinalFila] = '.';
             }
         }
-        listaMovimientos.remove(listaMovimientos.size()-1);
+        listaMovimientos.remove(listaMovimientos.size() - 1);
+    }
+
+    public void crearXML() {
+        try {
+            DocumentBuilderFactory fábricaCreadorDocumento = DocumentBuilderFactory.newInstance();
+            DocumentBuilder creadorDocumento = fábricaCreadorDocumento.newDocumentBuilder();
+            //Crear un nuevo documento XML
+            Document documento = creadorDocumento.newDocument();
+
+            //Crear el nodo raíz y colgarlo del documento
+            Element elementoRaiz = documento.createElement("MOVIMIENTOS");
+            documento.appendChild(elementoRaiz);
+
+            for (int i = 0; i < listaMovimientos.size(); i++) {
+                //Crear un elemento MOVMIMIENTO colgando de MOVIMIENTOS
+                Element elementoMovimiento = documento.createElement("MOVIMIENTO");
+                elementoRaiz.appendChild(elementoMovimiento);
+
+                //Crear un elemento NUM_MOVIMIENTO colgando de MOVIMIENTO
+                Element elementoNumMovimiento = documento.createElement("NUM_MOVIMIENTO");
+                elementoMovimiento.appendChild(elementoNumMovimiento);
+
+                //Crear un elemento Columna_ORIGEN colgando de MOVIMIENTO
+                Element elementoFilaOrigen = documento.createElement("POS_COLUMNA");
+                elementoMovimiento.appendChild(elementoFilaOrigen);
+
+                //Crear un elemento FILA_ORIGEN colgando de MOVIMIENTO
+                Element elementoFilaDestino = documento.createElement("POS_FILA");
+                elementoMovimiento.appendChild(elementoFilaDestino);
+
+                //Crear un elemento COLUM_FINAL colgando de MOVIMIENTO
+                Element elementoColumOrigen = documento.createElement("POS_FINALCOLUMNA");
+                elementoMovimiento.appendChild(elementoColumOrigen);
+
+                //Crear un elemento FILA_FINAL colgando de MOVIMIENTO
+                Element elementoColumDestino = documento.createElement("POS_FINALFILA");
+                elementoMovimiento.appendChild(elementoColumDestino);
+
+                //Obtener los numero de movimiento y colgarlos de NUM_MOVIMIENTO
+                Text textoNumMovimiento = documento.createTextNode(String.valueOf(i + 1));
+                elementoNumMovimiento.appendChild(textoNumMovimiento);
+
+                //Obtener la fila de origen y colgarlos de FILA_ORIGEN
+                Text textoFilaOrigen = documento.createTextNode(String.valueOf(listaMovimientos.get(i).getPosColumna()));
+                elementoFilaOrigen.appendChild(textoFilaOrigen);
+
+                //Obtener la fila de destino y colgarlos de FILA_DESTINO
+                Text textoFilaDestino = documento.createTextNode(String.valueOf(listaMovimientos.get(i).getPosFila()));
+                elementoFilaDestino.appendChild(textoFilaDestino);
+
+                //Obtener la columna de origen y colgarlos de COLUM_ORIGEN
+                Text textoColumOrigen = documento.createTextNode(String.valueOf(listaMovimientos.get(i).getPosFinalColum()));
+                elementoColumOrigen.appendChild(textoColumOrigen);
+
+                //Obtener la columna de destino y colgarlos de COLUM_DESTINO
+                Text textoColumDestino = documento.createTextNode(String.valueOf(listaMovimientos.get(i).getPosFinalFila()));
+                elementoColumDestino.appendChild(textoColumDestino);
+            }
+            //Generar el tranformador para obtener el documento XML en un fichero
+            TransformerFactory fábricaTransformador = TransformerFactory.newInstance();
+            Transformer transformador = fábricaTransformador.newTransformer();
+            //Insertar saltos de línea al final de cada línea
+            transformador.setOutputProperty(OutputKeys.INDENT, "yes");
+            //Añadir 3 espacios delante, en función del nivel de cada nodo
+            transformador.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "3");
+            Source origen = new DOMSource(documento);
+            Result destino = new StreamResult("movimientos.xml");
+            transformador.transform(origen, destino);
+
+        } catch (ParserConfigurationException ex) {
+            System.out.println("ERROR: No se ha creado el documento XML\n" + ex.getMessage());
+            ex.printStackTrace();
+        } catch (TransformerException ex) {
+            System.out.println("ERROR: No se ha creado la salida del documento XML\n" + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     public String dibujarTablero() {
@@ -133,7 +226,7 @@ public class Tablero {
             texto += "\n";
         }
         return texto;
-       
-    }   
+
+    }
 
 }
