@@ -1,6 +1,10 @@
 package seinku;
 
 import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -143,10 +147,10 @@ public class Tablero {
 
     public void crearXML() {
         try {
-            DocumentBuilderFactory fábricaCreadorDocumento = DocumentBuilderFactory.newInstance();
-            DocumentBuilder creadorDocumento = fábricaCreadorDocumento.newDocumentBuilder();
+            DocumentBuilderFactory creadorDocumento = DocumentBuilderFactory.newInstance();
+            DocumentBuilder crearDocumento = creadorDocumento.newDocumentBuilder();
             //Crear un nuevo documento XML
-            Document documento = creadorDocumento.newDocument();
+            Document documento = crearDocumento.newDocument();
 
             //Crear el nodo raíz y colgarlo del documento
             Element elementoRaiz = documento.createElement("MOVIMIENTOS");
@@ -229,4 +233,40 @@ public class Tablero {
 
     }
 
+    public void leerDocumento() throws FileNotFoundException, IOException {
+        String niveles = "nivel1.txt";
+        //Declarar una variable BufferedReader
+        BufferedReader br = null;
+        try {
+            //Crear un objeto BufferedReader al que se le pasa 
+            //   un objeto FileReader con el nombre del fichero
+            br = new BufferedReader(new FileReader(niveles));
+            //Leer la primera línea, guardando en un String
+            String texto = br.readLine();
+            //Repetir mientras no se llegue al final del fichero
+            while (texto != null) {
+                //Hacer lo que sea con la línea leída
+                System.out.println(texto);
+                //Leer la siguiente línea
+                texto = br.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: Fichero no encontrado");
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error de lectura del fichero");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (Exception e) {
+                System.out.println("Error al cerrar el fichero");
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+    }
 }
